@@ -1,5 +1,3 @@
-
-# acr variables
 variable "enable_acr" {
   type    = bool
   default = true
@@ -9,7 +7,6 @@ variable "acr_name" {
   type = string
 }
 
-# aks variables
 variable "cluster_name" {
   type = string
 }
@@ -51,7 +48,6 @@ variable "enable_oms_agent" {
   default = true
 }
 
-# networking variables
 variable "network_plugin" {
   default     = "azure"
   description = "Network plugin used by AKS. Either azure or kubenet."
@@ -93,7 +89,6 @@ variable "subnet_prefix" {
   default     = "10.10.1.0/24"
 }
 
-# flux variables
 variable "gc_enabled" {
   type    = string
   default = "true"
