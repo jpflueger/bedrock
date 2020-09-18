@@ -117,3 +117,23 @@ resource "azurerm_kubernetes_cluster" "cluster" {
 
   tags = var.tags
 }
+
+data "azurerm_resource_group" "node" {
+  name = azurerm_kubernetes_cluster.cluster.node_resource_group
+}
+
+resource "azurerm_role_assignment" "network_contributor" {
+  count                = var.skip_role_assignments ? 0 : 1
+  principal_id         = azurerm_kubernetes_cluster.cluster.identity[0].principal_id
+  role_definition_name = "Network Contributor"
+  scope                = var.vnet_subnet_id
+}
+
+resource "azurerm_role_assignment" "oms_agent_metrics_publisher" {
+  count = ! var.skip_role_assignments && var.oms_agent_enabled ? 1 : 0
+  principal_id = (var.msi_enabled
+    ? azurerm_kubernetes_cluster.cluster.addon_profile[0].oms_agent[0].oms_agent_identity[0].object_id
+  : azurerm_kubernetes_cluster.cluster.identity[0].principal_id)
+  role_definition_name = "Monitoring Metrics Publisher"
+  scope                = azurerm_kubernetes_cluster.cluster.id
+}

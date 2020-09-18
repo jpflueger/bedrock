@@ -127,6 +127,12 @@ variable "oms_agent_enabled" {
   default = "false"
 }
 
+variable "skip_role_assignments" {
+  type = bool
+  default = true
+  description = "Skip role assignments that require 'User Access Administrator' role for the identity used by Terraform."
+}
+
 variable "tags" {
   description = "The tags to associate with aks"
   type        = map

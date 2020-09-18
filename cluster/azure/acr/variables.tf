@@ -3,12 +3,17 @@ variable "resource_group_name" {
 }
 
 variable "enable_acr" {
-  type    = string
-  default = "false"
+  type    = bool
+  default = false
 }
 
 variable "acr_name" {
   type = string
+}
+
+variable "acr_pull_principal_ids" {
+  type    = list(string)
+  default = []
 }
 
 variable "tags" {
