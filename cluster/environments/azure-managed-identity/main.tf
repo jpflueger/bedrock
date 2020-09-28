@@ -79,6 +79,6 @@ module "aad-pod-identity" {
   source = "../../azure/aad-pod-identity"
 
   kubelet_identity_object_id                     = module.aks-gitops.kubelet_identity.object_id
-  node_resource_group                         = module.aks-gitops.node_resource_group
+  node_resource_group                            = module.aks-gitops.node_resource_group
   additional_managed_identity_resource_group_ids = [data.azurerm_resource_group.cluster.id]
 }
