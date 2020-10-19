@@ -157,7 +157,14 @@ if kubectl get secret $KUBE_SECRET_NAME -n $KUBE_NAMESPACE > /dev/null 2>&1; the
         exit 1
     fi
 
-    secret=$(< "$GITOPS_SSH_KEY" base64 -w 0)
+    secret=""
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+      # macOS doesn't support the 'w' option
+      secret=$(< "$GITOPS_SSH_KEY" base64 -b 0)
+    else
+      secret=$(< "$GITOPS_SSH_KEY" base64 -w 0)
+    fi
+
     if ! kubectl patch secret $KUBE_SECRET_NAME -n $KUBE_NAMESPACE -p="{\"data\":{\"identity\": \"$secret\"}}"; then
         echo "ERROR: failed to patch existing flux secret: $KUBE_SECRET_NAME "
         exit 1
